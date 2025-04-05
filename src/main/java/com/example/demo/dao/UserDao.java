@@ -12,4 +12,7 @@ public interface UserDao  {
     void updateUser(long id, String first_name, String last_name, int age, String email);
     void dropUser(Long id);
     Optional<User> findUserById(long id);
+
+    User getByUser(User user);
+
 }

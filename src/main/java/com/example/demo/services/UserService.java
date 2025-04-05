@@ -12,4 +12,5 @@ public interface UserService {
     void updateUser(long id, String first_name, String last_name, int age, String email);
     boolean dropUser(long id);
 
+    User getByUser(User user);
 }

@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 public class UserController {
 
@@ -21,7 +18,9 @@ public class UserController {
     }
 
     @GetMapping("/createUser")
-    public String createUser() {
+    public String createUser(ModelMap modelMap) {
+        User user = new User();
+        modelMap.addAttribute("user", user);
         return "createUser";
     }
 
@@ -38,23 +37,20 @@ public class UserController {
         user.setAge(age);
         user.setEmail(email);
         userService.createUser(user);
-        model.addAttribute("user", user);
-        return "readUsers";
+
+        model.addAttribute("user", userService.getByUser(user));
+        return "createUser";
 
     }
 
     @GetMapping("/readUsers")
     public String readUsers(ModelMap model) {
+
         model.addAttribute("users", userService.readUser());
 
         return "readUsers";
     }
-//
-//    @PostMapping("/readUsers")
-//    public String readUsers(ModelMap model) {
-//        model.addAttribute("users",userService.readUser());
-//        return "readUsers";
-//    }
+
 
     @GetMapping("/updateUsers")
     public String updateUsers() {
@@ -87,7 +83,8 @@ public class UserController {
     public String deleteUser(@RequestParam("id") long id,
                              ModelMap model) {
         if (userService.dropUser(id)) {
-            model.addAttribute("message", "User deleted successfully!");
+            model.addAttribute("massage", "User deleted successfully!");
+
         } else {
             model.addAttribute("error", "User could not be deleted!");
         }
